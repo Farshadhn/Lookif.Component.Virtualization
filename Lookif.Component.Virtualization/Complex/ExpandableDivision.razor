@@ -1,0 +1,13 @@
+﻿@typeparam TItem
+@using System.Diagnostics.CodeAnalysis
+@inherits ExpandableDivisionBase<TItem>
+
+@foreach (var item in Items)
+{
+    if (ItemTemplate is not null)
+    {
+          @ItemTemplate(item) 
+    }
+}
+
+ 
