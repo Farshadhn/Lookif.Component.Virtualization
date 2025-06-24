@@ -49,7 +49,6 @@ public class VirtualizationBase<TItem> : ComponentBase
     public async Task ScrollTriggerFunction()
     {
         currentPage++;
-        Console.WriteLine("ss");
         var newItems = await PerformScrollTrigger.Invoke(currentPage, Length);
         Items.AddRange(newItems.ToList()); //ToDo Check for duplicates
         StateHasChanged();

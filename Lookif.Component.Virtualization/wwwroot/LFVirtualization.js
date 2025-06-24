@@ -1,4 +1,4 @@
-﻿export function SetOrUnsetInstance(dotNetHelper, identity, IsItSet) { 
+﻿export function SetOrUnsetInstance(dotNetHelper, identity, IsItSet) {
     if (window.LFVirtualizations == undefined)
         window.LFVirtualizations = [];
     var obj = { "instance": dotNetHelper, "identity": identity };
@@ -10,13 +10,22 @@
     else {
         removeItemOnce(window.LFVirtualizations, identity);
     }
+    let isLoading = false;
+    $(window).scroll(function () {
+        if (isLoading) return; // already loading, do nothing
 
-    $(window).scroll(function () { 
         if ($(window).scrollTop() + $(window).height() > $(document).height() - 100) {
-            dotNetHelper.invokeMethodAsync('ScrollTrigger');
+
+            isLoading = true;
+
+            dotNetHelper.invokeMethodAsync('ScrollTrigger').then(() => {
+                isLoading = false;
+            }).catch(() => {
+                isLoading = false;
+            });
         }
     });
-    
+
 
 
 }
