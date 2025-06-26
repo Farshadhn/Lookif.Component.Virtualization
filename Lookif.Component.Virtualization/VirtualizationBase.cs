@@ -14,7 +14,7 @@ public class VirtualizationBase<TItem> : ComponentBase
     [Parameter] public ScrollTrigger PerformScrollTrigger { get; set; }
     [Parameter, AllowNull] public int Length { get; set; } = 50;
     [Parameter] public RenderFragment<TItem>? ItemTemplate { get; set; }
-    [Parameter] public List<TItem> Items { get; set; }
+    protected List<TItem> Items { get; set; } = [];
 
 
 
@@ -33,6 +33,7 @@ public class VirtualizationBase<TItem> : ComponentBase
     {
         Identity = Guid.NewGuid();
     }
+   
     protected async override Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender && _lFVirtualizationJSInterop is null)
@@ -43,6 +44,9 @@ public class VirtualizationBase<TItem> : ComponentBase
                 _lFVirtualizationJSInterop = new LFVirtualizationJSInterop<TItem>(_jSRuntime);
                 await _lFVirtualizationJSInterop.SetOrUnsetInstance(objRef, Identity, true);
             }
+            var newItems = await PerformScrollTrigger.Invoke(0, Length);
+            Items.AddRange(newItems.ToList()); //ToDo Check for duplicates
+            StateHasChanged();
         }
     }
     [JSInvokable("ScrollTrigger")]

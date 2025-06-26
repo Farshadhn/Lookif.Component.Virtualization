@@ -7,4 +7,5 @@ using System.Threading.Tasks;
 namespace Lookif.Component.Virtualization.Complex;
 public class ExpandableDivisionBase<TItem> : VirtualizationBase<TItem>
 {
+   
 }
